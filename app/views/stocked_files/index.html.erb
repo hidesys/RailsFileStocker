@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Stocked Files</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Original name</th>
+      <th>Hash</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stocked_files.each do |stocked_file| %>
+      <tr>
+        <td><%= stocked_file.original_name %></td>
+        <td><%= stocked_file.hash %></td>
+        <td><%= link_to 'Show', stocked_file %></td>
+        <td><%= link_to 'Edit', edit_stocked_file_path(stocked_file) %></td>
+        <td><%= link_to 'Destroy', stocked_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Stocked file', new_stocked_file_path %>

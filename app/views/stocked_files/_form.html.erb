@@ -1,0 +1,25 @@
+<%= form_for(@stocked_file) do |f| %>
+  <% if @stocked_file.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@stocked_file.errors.count, "error") %> prohibited this stocked_file from being saved:</h2>
+
+      <ul>
+      <% @stocked_file.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :original_name %><br>
+    <%= f.text_field :original_name %>
+  </div>
+  <div class="field">
+    <%= f.label :hash %><br>
+    <%= f.text_field :hash %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

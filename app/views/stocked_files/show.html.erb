@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Original name:</strong>
+  <%= @stocked_file.original_name %>
+</p>
+
+<p>
+  <strong>Hash:</strong>
+  <%= @stocked_file.hash %>
+</p>
+
+<%= link_to 'Edit', edit_stocked_file_path(@stocked_file) %> |
+<%= link_to 'Back', stocked_files_path %>
