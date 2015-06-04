@@ -1,5 +1,8 @@
+require "digest/md5"
+
 class StockedFilesController < ApplicationController
   before_action :set_stocked_file, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery except: :create
 
   # GET /stocked_files
   # GET /stocked_files.json
@@ -24,39 +27,39 @@ class StockedFilesController < ApplicationController
   # POST /stocked_files
   # POST /stocked_files.json
   def create
-    data = stocked_file_create_params[:data]
-    hash = Digest::MD5.hexdigest(stocked_file_create_params[:filename] + Time.now.to_s)
-    while StockedFile.where(hash: hash).count > 0
-      hash = Digest::MD5.hexdigest(Random.rand.to_s)
+    file = stocked_file_create_params[:filedata]
+    hash_key = Digest::MD5.hexdigest(file.original_filename + Time.now.to_s)
+    while StockedFile.where(hash_key: hash_key).count > 0
+      hash_key = Digest::MD5.hexdigest(Random.rand.to_s)
     end
-    File.open(get_file_path(hash), "wb") { |f|
-      f.write(data)
+    File.open(get_file_path(hash_key), "wb") { |f|
+      f.write(file.read)
     }
     @stocked_file = StockedFile.new({
-      original_name: stocked_file_create_params[:filename],
-      hash_key: hash,
-      size: data.bytesize
+      original_name: file.original_filename,
+      hash_key: hash_key,
+      size: file.size
     })
 
     respond_to do |format|
       if @stocked_file.save
         format.html { redirect_to @stocked_file, notice: 'Stocked file was successfully created.' }
         format.json { render :show, status: :created, location: @stocked_file }
-        format.txt  { render get_url(hash) }
+        format.txt  { render plain: get_url(hash_key) }
       else
         format.html { render :new }
         format.json { render json: @stocked_file.errors, status: :unprocessable_entity }
-        format.txt  { render "error" }
+        format.txt  { render plain: "error" }
       end
     end
   end
 
-  def get_file_path(hash)
-    dir = "public/files/#{hash[0]}/#{hash[1..hash.length]}"
+  def get_file_path(hash_key)
+    dir = "public/files/#{hash_key[0]}/"
     if !Dir.exists?(dir)
       Dir.mkdir(dir)
     end
-    dir
+    dir + hash_key[1..hash_key.length]
   end
 
   def get_url(hash)
@@ -99,6 +102,6 @@ class StockedFilesController < ApplicationController
     end
 
    def stocked_file_create_params
-      params.permit(:filename, :data)
+      params.permit(:filedata)
    end
 end
