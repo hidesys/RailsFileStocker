@@ -1,0 +1,19 @@
+= form_for(@stocked_file) do |f|
+  - if @stocked_file.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@stocked_file.errors.count, "error")
+        prohibited this stocked_file from being saved:
+      %ul
+        - @stocked_file.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :original_name
+    %br/
+    = f.text_field :original_name
+  .field
+    = f.label :hash
+    %br/
+    = f.text_field :hash
+  .actions
+    = f.submit

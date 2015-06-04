@@ -43,3 +43,7 @@ group :development, :test do
   gem 'spring'
 end
 
+#Haml
+gem "haml-rails"
+gem "erb2haml"
+

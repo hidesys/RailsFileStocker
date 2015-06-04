@@ -1,0 +1,20 @@
+%p#notice= notice
+%h1 Listing Stocked Files
+%table
+  %thead
+    %tr
+      %th Original name
+      %th Hash
+      %th Size
+      %th{:colspan => "3"}
+  %tbody
+    - @stocked_files.each do |stocked_file|
+      %tr
+        %td= stocked_file.original_name
+        %td= stocked_file.hash_key
+        %td= stocked_file.size
+        %td= link_to 'Show', stocked_file
+        %td= link_to 'Edit', edit_stocked_file_path(stocked_file)
+        %td= link_to 'Destroy', stocked_file, method: :delete, data: { confirm: 'Are you sure?' }
+%br/
+= link_to 'New Stocked file', new_stocked_file_path

@@ -1,0 +1,13 @@
+%p#notice= notice
+%p
+  %strong Original name:
+  = @stocked_file.original_name
+%p
+  %strong Hash:
+  = @stocked_file.hash_key
+%p
+  %strong Size:
+  = @stocked_file.size
+= link_to 'Edit', edit_stocked_file_path(@stocked_file)
+|
+= link_to 'Back', stocked_files_path

@@ -34,7 +34,7 @@ class StockedFilesController < ApplicationController
     }
     @stocked_file = StockedFile.new({
       original_name: stocked_file_create_params[:filename],
-      hash: hash,
+      hash_key: hash,
       size: data.bytesize
     })
 
@@ -90,12 +90,12 @@ class StockedFilesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_stocked_file
-      @stocked_file = StockedFile.find_by(id: params[:id]) || StockedFile.find_by(hash: params[:hash])
+      @stocked_file = StockedFile.find_by(id: params[:id]) || StockedFile.find_by(hash_key: params[:hash_key])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stocked_file_params
-      params.require(:stocked_file).permit(:original_name, :hash)
+      params.require(:stocked_file).permit(:original_name, :hash_key)
     end
 
    def stocked_file_create_params
