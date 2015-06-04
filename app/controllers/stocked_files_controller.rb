@@ -7,16 +7,19 @@ class StockedFilesController < ApplicationController
   # GET /stocked_files
   # GET /stocked_files.json
   def index
+    @title = "ファイル一覧"
     @stocked_files = StockedFile.all
   end
 
   # GET /stocked_files/1
   # GET /stocked_files/1.json
   def show
+    @title = @stocked_file.original_name
   end
 
   # GET /stocked_files/new
   def new
+    @title = "ファイルアップロード"
     @stocked_file = StockedFile.new
   end
 
