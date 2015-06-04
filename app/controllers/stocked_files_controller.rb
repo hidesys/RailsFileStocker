@@ -1,7 +1,7 @@
 require "digest/md5"
 
 class StockedFilesController < ApplicationController
-  before_action :set_stocked_file, only: [:show, :edit, :update, :destroy]
+  before_action :set_stocked_file, only: [:show, :destroy, :download]
   protect_from_forgery except: :create
 
   # GET /stocked_files
@@ -18,10 +18,6 @@ class StockedFilesController < ApplicationController
   # GET /stocked_files/new
   def new
     @stocked_file = StockedFile.new
-  end
-
-  # GET /stocked_files/1/edit
-  def edit
   end
 
   # POST /stocked_files
@@ -54,7 +50,8 @@ class StockedFilesController < ApplicationController
     end
   end
 
-  def get_file_path(hash_key)
+  def get_file_path(obj)
+    hash_key = obj.is_a?(StockedFile) ? obj.hash_key : obj
     dir = "public/files/#{hash_key[0]}/"
     if !Dir.exists?(dir)
       Dir.mkdir(dir)
@@ -66,23 +63,15 @@ class StockedFilesController < ApplicationController
     "http://filezo.hidesys.net/#{hash}"
   end
 
-  # PATCH/PUT /stocked_files/1
-  # PATCH/PUT /stocked_files/1.json
-  def update
-    respond_to do |format|
-      if @stocked_file.update(stocked_file_params)
-        format.html { redirect_to @stocked_file, notice: 'Stocked file was successfully updated.' }
-        format.json { render :show, status: :ok, location: @stocked_file }
-      else
-        format.html { render :edit }
-        format.json { render json: @stocked_file.errors, status: :unprocessable_entity }
-      end
-    end
+  def download
+    file_path = get_file_path(@stocked_file.hash_key)
+    send_file(file_path, filename: @stocked_file.original_name)
   end
 
   # DELETE /stocked_files/1
   # DELETE /stocked_files/1.json
   def destroy
+    File.delete(get_file_path(@stocked_file))
     @stocked_file.destroy
     respond_to do |format|
       format.html { redirect_to stocked_files_url, notice: 'Stocked file was successfully destroyed.' }

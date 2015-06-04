@@ -3,11 +3,14 @@
   %strong Original name:
   = @stocked_file.original_name
 %p
-  %strong Hash:
-  = @stocked_file.hash_key
-%p
   %strong Size:
-  = @stocked_file.size
-= link_to 'Edit', edit_stocked_file_path(@stocked_file)
+  = easy_file_size(@stocked_file.size)
+%p
+  %strong アップロード日時:
+  = @stocked_file.created_at
+%p
+  %strong
+    = link_to "Download", download_path(@stocked_file)
+= link_to 'Destroy', @stocked_file, method: :delete, data: { confirm: 'Are you sure?' }
 |
-= link_to 'Back', stocked_files_path
+= link_to 'Back', root_path

@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  resources :stocked_files, :except => [:update]
-  post "upload" => "stocked_files#create"
-  get ":hash_key" => "stocked_files#show"
+  resources :stocked_files, :except => [:edit, :update]
+  post "upload" => "stocked_files#create", as: "upload"
+  get ":hash_key" => "stocked_files#show", as: "file_show"
   root "stocked_files#index"
+  get ":hash_key/download" => "stocked_files#download", as: "download"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,6 @@
+= form_for(StockedFile.new, html: { multipart: true }) do |f|
+  %p
+    = file_field_tag("filedata")
+  %p
+    = f.submit "アップロード"
+
