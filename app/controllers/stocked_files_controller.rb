@@ -8,7 +8,7 @@ class StockedFilesController < ApplicationController
   # GET /stocked_files.json
   def index
     @title = "ファイル一覧"
-    @stocked_files = StockedFile.all
+    @stocked_files = StockedFile.order("id DESC").all
   end
 
   # GET /stocked_files/1
